@@ -1,0 +1,7 @@
+(1) Use object-oriented Ruby to model a public library 
+(w/ three classes: Library, Shelf, & Book). 
+1. The library should be aware of a number of shelves.
+2. Each shelf should know what books it contains.
+3. Make the book object have "enshelf" and "unshelf" methods that control what shelf the book is sitting on.
+4. The library should have a method to report all books it contains.
+

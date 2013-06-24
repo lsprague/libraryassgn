@@ -1,19 +1,25 @@
 class Library
 
-    def initialize(contents)
+    def initialize()
         @contents = contents
     end
     
     def catalog()
-        #for each shelf, output contents of that shelf's hash
+        puts "The library contains the following books:"
+        @titles.each do |title|
+            puts "#{name}"
+        
     end
 end
+
 
 class Shelf
 
     def initialize(shelfname)
         #hash = shelfname
     end
+    
+    def shelfcont()
     
     def addbook()
         # append @book 

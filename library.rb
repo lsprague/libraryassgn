@@ -1,55 +1,72 @@
-class Library
-
+class Library < ActiveRecord::Base
+has_many :books, :shelves
     def initialize()
-        @contents = contents
+        @books = Book.all
+        @shelves = Shelf.all
     end
     
     def catalog()
         puts "The library contains the following books:"
-        @titles.each do |title|
-            puts "#{name}"
-        
+        @books.each puts "#{title}"
+    end
+    
+    def categories()
+        puts "The library sorts books onto the following shelves:"
+        @shelves.each puts "#{shelfname}"
     end
 end
 
 
-class Shelf
+class Shelf < Library
+belongs_to :library
+has_many :books
+attr_accessor :shelfname
 
     def initialize(shelfname)
-        #hash = shelfname
+        @shelved = {Book.shelfname.all} #an array of books with that shelf property
     end
     
-    def shelfcont()
-    
-    def addbook()
-        # append @book 
+    def shelfcontents()
+        @shelved.each puts "#{title}"
     end
-    
-    def removebook()
-        #syntax to remove @book from hash
-        # unless it already wasn't there; then
-        # puts "Hmm, that book wasn't on this shelf."
-    end
+        
 end
 
 
 class Book
-
-    def initialize(title, shelf)
+belongs_to :library, :shelves
+# Create the book and default it to Unshelved: the base state is existing and unsorted.
+    def initialize(title)
         @title = title
-        @shelf = shelf
+        @title.Shelf(Unshelved)
     end
     
-    def enshelf()
-        Shelf.new(@shelf)
-        @title.addbook()
+    def enshelf(shelfname)
+        @shelfname = shelfname
+        @title.Shelf(@shelfname)
+    end
+    
+    def unshelf()
+        @title.Shelf(Unshelved)
     end
 end
 
 
-KforKiller = Book.new("K is for Killer", Mystery)
+KforKiller = Book.new("K is for Killer")
+IRobot = Book.new("I, Robot")
 
+sf = Shelf.new("Science Fiction")
+
+catalog.Library()
+
+IRobot.enshelf(sf)
+
+sf.shelfcontents()
 
 # To get user input to add to the catalog: ask for input, twice
 # First raw input becomes variable bkname; second variable shname
-# NewRecord = Book.new(bkname, shname)
+# NewRecord = Book.new(bkname)
+# should the shelf option be limited to only existing shelves?
+# how much power does the shelving librarian have?
+
+end

@@ -16,18 +16,32 @@ has_many :books, :shelves
     end
 end
 
+# The shelf is the tricky part; there's only one library but multiple shelves,
+# so shelves have to be able to define subsets of the complete set of library books.
 
 class Shelf < Library
 belongs_to :library
 has_many :books
 attr_accessor :shelfname
+@books = Book.all
 
+# create a shelf; a shelf is a hash
     def initialize(shelfname)
-        @shelved = {Book.shelfname.all} #an array of books with that shelf property
+    	@shelfname = shelfname
+        self.shelved = {}
+        fillshelf()
+    end
+    
+    def fillshelf()
+         # in the set of book objects, add all matching this shelf name to hash
+        for Book in @books
+            if placewhere == @shelfname
+                shelved.push(Book)
+            end
     end
     
     def shelfcontents()
-        @shelved.each puts "#{title}"
+        shelved.each puts "#{title}"
     end
         
 end
@@ -35,22 +49,24 @@ end
 
 class Book
 belongs_to :library, :shelves
+attr_accessor :placewhere
 # Create the book and default it to Unshelved: the base state is existing and unsorted.
     def initialize(title)
         @title = title
-        @title.Shelf(Unshelved)
+        @title.placewhere = Unshelved
     end
     
     def enshelf(shelfname)
         @shelfname = shelfname
-        @title.Shelf(@shelfname)
+        @title.placewhere = @shelfname
     end
     
     def unshelf()
-        @title.Shelf(Unshelved)
+        @title.placewhere = Unshelved
     end
 end
 
+Unshelved = Shelf.new("Currently Unshelved")
 
 KforKiller = Book.new("K is for Killer")
 IRobot = Book.new("I, Robot")

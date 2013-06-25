@@ -1,5 +1,4 @@
-class Library < ActiveRecord::Base
-has_many :books, :shelves
+class Library
     def initialize()
         @books = Book.all
         @shelves = Shelf.all
@@ -20,35 +19,29 @@ end
 # so shelves have to be able to define subsets of the complete set of library books.
 
 class Shelf < Library
-belongs_to :library
-has_many :books
 attr_accessor :shelfname
-@books = Book.all
 
 # create a shelf; a shelf is a hash
     def initialize(shelfname)
     	@shelfname = shelfname
-        self.shelved = {}
+        @shelved = {}
         fillshelf()
     end
     
     def fillshelf()
          # in the set of book objects, add all matching this shelf name to hash
-        for Book in @books
-            if placewhere == @shelfname
-                shelved.push(Book)
-            end
+        @books.find(:placewhere => @shelfname)
+            @shelved.push(Book)
     end
     
     def shelfcontents()
-        shelved.each puts "#{title}"
+        @shelved.each puts "#{title}"
     end
         
 end
 
 
 class Book
-belongs_to :library, :shelves
 attr_accessor :placewhere
 # Create the book and default it to Unshelved: the base state is existing and unsorted.
     def initialize(title)
@@ -84,5 +77,3 @@ sf.shelfcontents()
 # NewRecord = Book.new(bkname)
 # should the shelf option be limited to only existing shelves?
 # how much power does the shelving librarian have?
-
-end
